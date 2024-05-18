@@ -114,3 +114,12 @@ export async function p2phandler(to: string, amount: number) {
     };
   }
 }
+
+export const findP2Ptranx = async (id: number) => {
+  const data = await prisma.p2pTransfer.findMany({
+    where: {
+      OR: [{ toUserId: { equals: id } }, { fromUserId: { equals: id } }],
+    },
+  });
+  return data;
+};

@@ -1,11 +1,10 @@
 "use client";
+
 import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
-import { Center } from "@repo/ui/center";
 import { Select } from "@repo/ui/select";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
-import db from "@repo/db/client";
 import { onRampTransaction } from "../app/lib/actions";
 
 const SUPPORTED_BANKS = [
@@ -23,7 +22,7 @@ export const AddMoney = () => {
   const [redirectUrl, setRedirectUrl] = useState(
     SUPPORTED_BANKS[0]?.redirectUrl
   );
-  const [amount, setAmount] = useState<number | null>(null);
+  const [amount, setAmount] = useState<number>(0);
   return (
     <Card title="Add Money">
       <div className="w-full">
@@ -31,7 +30,7 @@ export const AddMoney = () => {
           label={"Amount"}
           placeholder={"Amount"}
           onChange={(e) => {
-            setAmount(e.target.value);
+            setAmount(Number(e));
           }}
         />
         <div className="py-4 text-left">Bank</div>
@@ -47,7 +46,15 @@ export const AddMoney = () => {
           }))}
         />
         <div className="flex justify-center pt-4">
-          <Button onClick={onRampTransaction(amount)}>Add Money</Button>
+          <Button
+            onClick={async () => {
+              if (amount !== 0 && redirectUrl) {
+                await onRampTransaction(amount, redirectUrl);
+              }
+            }}
+          >
+            Add Money
+          </Button>
         </div>
       </div>
     </Card>

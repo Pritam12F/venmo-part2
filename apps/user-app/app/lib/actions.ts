@@ -60,39 +60,50 @@ export async function p2phandler(to: string, amount: number) {
   }
 
   try {
-    await prisma.$transaction([
-      prisma.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(userId)} FOR UPDATE`,
-      prisma.balance.update({
+    await prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(userId)} FOR UPDATE`;
+
+      const checkBalance = await tx.balance.findFirst({
         where: {
-          userId,
+          userId: Number(userId),
+        },
+      });
+
+      if (!checkBalance || checkBalance.amount < amount) {
+        throw new Error("Insufficient funds");
+      }
+
+      await tx.balance.update({
+        where: {
+          userId: Number(userId),
         },
         data: {
           amount: {
             decrement: amount,
           },
         },
-      }),
+      });
 
-      prisma.balance.update({
+      await tx.balance.update({
         where: {
-          userId: Number(to),
+          userId: toUser.id,
         },
         data: {
           amount: {
             increment: amount,
           },
         },
-      }),
+      });
 
-      prisma.p2pTransfer.create({
+      await tx.p2pTransfer.create({
         data: {
+          toUserId: toUser.id,
+          fromUserId: Number(userId),
           amount,
           timestamp: new Date(),
-          fromUserId: userId,
-          toUserId: Number(to),
         },
-      }),
-    ]);
+      });
+    });
 
     return {
       message: "Transaction was successful",

@@ -4,6 +4,7 @@ import { Button } from "@repo/ui/button";
 import { Card } from "@repo/ui/card";
 import { TextInput } from "@repo/ui/textinput";
 import { useState } from "react";
+import { p2phandler } from "../app/lib/actions";
 
 export const Peer2Peer = () => {
   const [amount, setAmount] = useState("");
@@ -27,7 +28,13 @@ export const Peer2Peer = () => {
           }}
         />
         <div className="mt-5 flex justify-center">
-          <Button onClick={() => {}}>Send</Button>
+          <Button
+            onClick={() => {
+              p2phandler(number, Number(amount));
+            }}
+          >
+            Send
+          </Button>
         </div>
       </Card>
     </div>

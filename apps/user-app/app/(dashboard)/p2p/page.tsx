@@ -5,7 +5,7 @@ export default async function Page() {
   return (
     <div className="flex justify-center items-center w-full gap-52">
       <Peer2Peer />
-      <P2PTxns />
+      <P2PTxns title="Recent transactions" />
     </div>
   );
 }

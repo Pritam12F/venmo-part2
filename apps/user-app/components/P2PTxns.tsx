@@ -3,10 +3,10 @@
 import { Card } from "@repo/ui/card";
 import { useGetAllP2P } from "../app/hooks/useGetAllp2p";
 
-export const P2PTxns = () => {
+export const P2PTxns = ({ title }: { title: string }) => {
   const { transactions, id } = useGetAllP2P();
   return (
-    <Card title="Recent transactions">
+    <Card title={title}>
       {transactions.map((el) => {
         return (
           <div className="flex p-5">

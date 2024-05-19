@@ -126,5 +126,5 @@ export const findP2Ptranx = async () => {
       ],
     },
   });
-  return { data, userId };
+  return { data, userId, user: session.user };
 };

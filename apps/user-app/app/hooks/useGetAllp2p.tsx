@@ -1,23 +1,20 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { findP2Ptranx } from "../lib/actions";
 
 export const useGetAllP2P = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
-
-  const session = useSession();
-  //@ts-ignore
-  const id = session.data?.user.id;
+  const [id, setId] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await findP2Ptranx(Number(id));
+      const { data, userId } = await findP2Ptranx();
       setTransactions(data);
+      setId(userId);
     };
     fetchData();
   }, []);
 
-  return transactions;
+  return { transactions, id };
 };

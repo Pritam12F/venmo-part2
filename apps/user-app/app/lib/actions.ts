@@ -115,11 +115,16 @@ export async function p2phandler(to: string, amount: number) {
   }
 }
 
-export const findP2Ptranx = async (id: number) => {
+export const findP2Ptranx = async () => {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
   const data = await prisma.p2pTransfer.findMany({
     where: {
-      OR: [{ toUserId: { equals: id } }, { fromUserId: { equals: id } }],
+      OR: [
+        { toUserId: { equals: Number(userId) } },
+        { fromUserId: { equals: Number(userId) } },
+      ],
     },
   });
-  return data;
+  return { data, userId };
 };

@@ -1,6 +1,6 @@
 import { P2PTxns } from "../../../components/P2PTxns";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
-import { getOnRampTransactions } from "../transfer/page";
+import { getOnRampTransactions } from "../../lib/actions";
 
 export default async function () {
   const transactions = await getOnRampTransactions();

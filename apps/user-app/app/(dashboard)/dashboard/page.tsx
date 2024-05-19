@@ -1,21 +1,7 @@
-import { getServerSession } from "next-auth";
 import { BalanceCard } from "../../../components/BalanceCard";
-import { authOptions } from "../../lib/auth";
-import prisma from "@repo/db/client";
 import { UserDetails } from "../../../components/UserDetails";
-
-async function getBalance() {
-  const session = await getServerSession(authOptions);
-  const balance = await prisma.balance.findFirst({
-    where: {
-      userId: Number(session?.user?.id),
-    },
-  });
-  return {
-    amount: balance?.amount || 0,
-    locked: balance?.locked || 0,
-  };
-}
+import { Transactions } from "../../../components/Transactions";
+import { getBalance } from "../../lib/actions";
 
 export default async function () {
   const balance = await getBalance();
@@ -24,6 +10,9 @@ export default async function () {
       <div className="col-span-5 w-full grid grid-cols-2 gap-x-20 my-4">
         <BalanceCard amount={balance.amount} locked={balance.locked} />
         <UserDetails />
+      </div>
+      <div className="col-span-5 ">
+        <Transactions />
       </div>
     </div>
   );

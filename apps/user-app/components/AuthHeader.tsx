@@ -1,9 +1,5 @@
 import Link from "next/link";
-
-export enum AuthType {
-  Signup,
-  Signin,
-}
+import { AuthType } from "../types";
 
 export const AuthHeader = ({ type }: { type: AuthType }) => {
   return (
@@ -17,7 +13,7 @@ export const AuthHeader = ({ type }: { type: AuthType }) => {
         Or
         <Link
           className="font-medium text-primary-800 hover:text-primary-500 "
-          href={type === AuthType.Signin ? "/signup" : "/signin"}
+          href={type === AuthType.Signin ? "/signup" : "/api/auth/signin"}
         >
           {" "}
           {type === AuthType.Signin

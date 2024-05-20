@@ -1,8 +1,16 @@
+import { getServerSession } from "next-auth";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { OnRampTransactions } from "../../../components/OnRampTransactions";
 import { getOnRampTransactions } from "../../lib/actions";
+import { authOptions } from "../../lib/auth";
+import { redirect } from "next/navigation";
 
 export default async function () {
+  const session = await getServerSession(authOptions);
+  if (!session?.user) {
+    redirect("/api/auth/signin");
+  }
+
   const transactions = await getOnRampTransactions();
 
   return (

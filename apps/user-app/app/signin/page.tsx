@@ -1,5 +1,6 @@
-import { AuthHeader, AuthType } from "../../components/AuthHeader";
-import { AuthFormWrapper, FormType } from "../../components/FormWrapper";
+import { AuthHeader } from "../../components/AuthHeader";
+import { AuthFormWrapper } from "../../components/FormWrapper";
+import { AuthType, FormType } from "../../types";
 
 export default function Signin() {
   return (

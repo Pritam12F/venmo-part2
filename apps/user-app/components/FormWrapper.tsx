@@ -2,72 +2,64 @@
 
 import { TextInput } from "@repo/ui/textinput";
 import { FormType } from "../types";
-import { useState } from "react";
 import { Button } from "@repo/ui/button";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState("");
-  const [pass, setPass] = useState("");
+  const router = useRouter();
+
+  const handleSignin = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const phone = formData.get("number");
+    const password = formData.get("password");
+
+    try {
+      await signIn("credentials", {
+        phone,
+        password,
+        callbackUrl: "/dashboard",
+      });
+    } catch (error) {
+      console.log("Wrong credentials");
+      return null;
+    }
+  };
 
   if (type === FormType.Signin) {
     return (
-      <div>
+      <form onSubmit={handleSignin}>
         <TextInput
           placeholder="Enter number"
           label="Phone number"
-          onChange={(str) => {
-            setNumber(str);
-          }}
+          name="number"
         />
-        <TextInput
-          placeholder="*********"
-          label="Password"
-          onChange={(str) => {
-            setPass(str);
-          }}
-        />
+        <TextInput placeholder="*********" label="Password" name="password" />
         <div className="my-6">
-          <Button style="w-full">Sign in</Button>
+          <Button style="w-full" type="submit">
+            Sign in
+          </Button>
         </div>
-      </div>
+      </form>
     );
   } else {
     return (
-      <div>
-        <TextInput
-          placeholder="Enter name"
-          label="Username"
-          onChange={(str) => {
-            setName(str);
-          }}
-        />
-        <TextInput
-          placeholder="Enter email"
-          label="Email"
-          onChange={(str) => {
-            setEmail(str);
-          }}
-        />
+      <form>
+        <TextInput placeholder="Enter name" label="Username" name="username" />
+        <TextInput placeholder="Enter email" label="Email" name="email" />
         <TextInput
           placeholder="Enter number"
           label="Phone number"
-          onChange={(str) => {
-            setNumber(str);
-          }}
+          name="number"
         />
-        <TextInput
-          placeholder="*********"
-          label="Password"
-          onChange={(str) => {
-            setPass(str);
-          }}
-        />
+        <TextInput placeholder="*********" label="Password" name="password" />
         <div className="my-6">
-          <Button style="w-full">Sign up</Button>
+          <Button style="w-full" type="submit">
+            Sign up
+          </Button>
         </div>
-      </div>
+      </form>
     );
   }
 };

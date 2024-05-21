@@ -156,3 +156,5 @@ export async function getOnRampTransactions() {
     provider: t.provider,
   }));
 }
+
+export async function handleSignup(params: type) {}

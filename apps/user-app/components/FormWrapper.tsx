@@ -3,6 +3,7 @@
 import { TextInput } from "@repo/ui/textinput";
 import { FormType } from "../types";
 import { useState } from "react";
+import { Button } from "@repo/ui/button";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
   const [name, setName] = useState("");
@@ -27,6 +28,9 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
             setPass(str);
           }}
         />
+        <div className="my-6">
+          <Button style="w-full">Sign in</Button>
+        </div>
       </div>
     );
   } else {
@@ -60,6 +64,9 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
             setPass(str);
           }}
         />
+        <div className="my-6">
+          <Button style="w-full">Sign up</Button>
+        </div>
       </div>
     );
   }

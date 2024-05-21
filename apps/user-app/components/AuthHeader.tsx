@@ -12,7 +12,7 @@ export const AuthHeader = ({ type }: { type: AuthType }) => {
       <p className="mt-2 text-center text-sm text-gray-600">
         Or
         <Link
-          className="font-medium text-primary-800 hover:text-primary-500 "
+          className="font-medium text-primary-800 hover:text-primary-500 hover:underline"
           href={type === AuthType.Signin ? "/signup" : "/api/auth/signin"}
         >
           {" "}

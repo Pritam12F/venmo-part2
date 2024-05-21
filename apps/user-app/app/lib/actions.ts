@@ -3,6 +3,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
+import { signIn } from "next-auth/react";
 
 export async function onRampTransaction(amount: number, provider: string) {
   const session = await getServerSession(authOptions);
@@ -157,4 +158,20 @@ export async function getOnRampTransactions() {
   }));
 }
 
-export async function handleSignup(params: type) {}
+export const handleSignin = async (e) => {
+  e.preventDefault();
+  const formData = new FormData(e.target);
+  const phone = formData.get("number");
+  const password = formData.get("password");
+
+  try {
+    await signIn("credentials", {
+      phone,
+      password,
+      callbackUrl: "/dashboard",
+    });
+  } catch (error) {
+    console.log("Wrong credentials");
+    return null;
+  }
+};

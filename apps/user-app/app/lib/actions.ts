@@ -17,7 +17,7 @@ export async function onRampTransaction(amount: number, provider: string) {
   }
 
   try {
-    const transaction = await prisma.onRampTransaction.create({
+    await prisma.onRampTransaction.create({
       data: {
         amount,
         provider,

@@ -19,7 +19,7 @@ export function AppbarClient() {
         onSignin={signIn}
         onSignout={async () => {
           await signOut();
-          router.push("/api/auth/signin");
+          router.push("/signin");
         }}
         user={session.data?.user}
       />

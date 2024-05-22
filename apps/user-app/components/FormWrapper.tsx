@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 import { createUser, validSignIn, validSignup } from "../app/lib/actions";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
-  const handleSignin = async (e) => {
+  const handleSignin = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const phone = formData.get("number");
@@ -30,7 +30,7 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
     }
   };
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const phone = String(formData.get("number"));

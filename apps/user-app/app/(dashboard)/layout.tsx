@@ -89,7 +89,7 @@ function TransactionsIcon() {
   );
 }
 
-function ArrowUpRightIcon(props) {
+function ArrowUpRightIcon(props: any) {
   return (
     <svg
       {...props}

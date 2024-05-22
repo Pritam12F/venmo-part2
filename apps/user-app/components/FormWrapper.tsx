@@ -1,10 +1,10 @@
 "use client";
 
 import { TextInput } from "@repo/ui/textinput";
-import { FormType, signInSchema, signUpSchema } from "../types";
+import { FormType } from "../types";
 import { Button } from "@repo/ui/button";
 import { signIn } from "next-auth/react";
-import { createUser } from "../app/lib/actions";
+import { createUser, validSignIn, validSignup } from "../app/lib/actions";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
   const handleSignin = async (e) => {
@@ -13,13 +13,8 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
     const phone = formData.get("number");
     const password = formData.get("password");
 
-    const { success } = signInSchema.safeParse({
-      number: String(phone),
-      password: String(password),
-    });
-
-    if (!success) {
-      alert("Wrong inputs!!");
+    if (!validSignIn(phone, password)) {
+      alert("wrong inputs");
       return;
     }
 
@@ -30,7 +25,7 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
         callbackUrl: "/dashboard",
       });
     } catch (error) {
-      console.log("Wrong credentials");
+      alert(error);
       return null;
     }
   };
@@ -43,15 +38,9 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
     const email = String(formData.get("email"));
     const username = String(formData.get("username"));
 
-    const { success } = signUpSchema.safeParse({
-      number: String(phone),
-      password: String(password),
-      username,
-      email,
-    });
-
-    if (!success) {
-      alert("Wrong inputs");
+    if (validSignup(phone, password, email, username)) {
+      alert("Wrong inputs!!");
+      return;
     }
 
     try {

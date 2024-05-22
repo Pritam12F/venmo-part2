@@ -3,6 +3,7 @@
 import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
+import { signInSchema, signUpSchema } from "../../types";
 
 export async function onRampTransaction(amount: number, provider: string) {
   const session = await getServerSession(authOptions);
@@ -175,4 +176,32 @@ export const createUser = async (
   } catch (err) {
     throw new Error("Error occured signing up user ");
   }
+};
+
+export const validSignIn = (
+  phone: FormDataEntryValue | null,
+  password: FormDataEntryValue | null
+) => {
+  const { success } = signInSchema.safeParse({
+    number: String(phone),
+    password: String(password),
+  });
+
+  return success ? true : false;
+};
+
+export const validSignup = (
+  phone: string,
+  password: string,
+  email: string,
+  username: string
+) => {
+  const { success } = signUpSchema.safeParse({
+    number: phone,
+    password,
+    username,
+    email,
+  });
+
+  return success ? true : false;
 };

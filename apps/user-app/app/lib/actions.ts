@@ -61,7 +61,7 @@ export async function p2phandler(to: string, amount: number) {
   }
 
   try {
-    return prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx: any) => {
       await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(userId)} FOR UPDATE`;
 
       const checkBalance = await tx.balance.findFirst({

@@ -4,10 +4,10 @@ import { findP2Ptranx, getOnRampTransactions } from "../app/lib/actions";
 export const Transactions = async () => {
   const { data, userId } = await findP2Ptranx();
   const onramps = await getOnRampTransactions();
-  const latest_p2p = data.reduce((prev, curr) =>
+  const latest_p2p = data.reduce((prev: any, curr: any) =>
     curr.timestamp > prev.timestamp ? curr : prev
   );
-  const latest_onramp = onramps.reduce((prev, curr) =>
+  const latest_onramp = onramps.reduce((prev: any, curr: any) =>
     curr.time > prev.time ? curr : prev
   );
 

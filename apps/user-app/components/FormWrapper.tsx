@@ -1,11 +1,65 @@
 "use client";
 
 import { TextInput } from "@repo/ui/textinput";
-import { FormType } from "../types";
+import { FormType, signInSchema, signUpSchema } from "../types";
 import { Button } from "@repo/ui/button";
-import { handleSignin } from "../app/lib/actions";
+import { signIn } from "next-auth/react";
+import { createUser } from "../app/lib/actions";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
+  const handleSignin = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const phone = formData.get("number");
+    const password = formData.get("password");
+
+    const { success } = signInSchema.safeParse({
+      number: String(phone),
+      password: String(password),
+    });
+
+    if (!success) {
+      alert("Wrong inputs!!");
+      return;
+    }
+
+    try {
+      await signIn("credentials", {
+        phone,
+        password,
+        callbackUrl: "/dashboard",
+      });
+    } catch (error) {
+      console.log("Wrong credentials");
+      return null;
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const phone = String(formData.get("number"));
+    const password = String(formData.get("password"));
+    const email = String(formData.get("email"));
+    const username = String(formData.get("username"));
+
+    const { success } = signUpSchema.safeParse({
+      number: String(phone),
+      password: String(password),
+      username,
+      email,
+    });
+
+    if (!success) {
+      alert("Wrong inputs");
+    }
+
+    try {
+      await createUser(phone, password, email, username);
+    } catch (err) {
+      console.log("Error signing up user");
+    }
+  };
   if (type === FormType.Signin) {
     return (
       <form onSubmit={handleSignin}>
@@ -14,7 +68,12 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
           label="Phone number"
           name="number"
         />
-        <TextInput placeholder="*********" label="Password" name="password" />
+        <TextInput
+          placeholder="*********"
+          label="Password"
+          name="password"
+          type="password"
+        />
         <div className="my-6">
           <Button style="w-full" type="submit">
             Sign in
@@ -24,7 +83,7 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
     );
   } else {
     return (
-      <form>
+      <form onSubmit={handleSignup}>
         <TextInput placeholder="Enter name" label="Username" name="username" />
         <TextInput placeholder="Enter email" label="Email" name="email" />
         <TextInput
@@ -32,7 +91,12 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
           label="Phone number"
           name="number"
         />
-        <TextInput placeholder="*********" label="Password" name="password" />
+        <TextInput
+          placeholder="*********"
+          label="Password"
+          name="password"
+          type="password"
+        />
         <div className="my-6">
           <Button style="w-full" type="submit">
             Sign up

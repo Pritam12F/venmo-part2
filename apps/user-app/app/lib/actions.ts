@@ -61,7 +61,7 @@ export async function p2phandler(to: string, amount: number) {
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
+    return prisma.$transaction(async (tx) => {
       await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(userId)} FOR UPDATE`;
 
       const checkBalance = await tx.balance.findFirst({
@@ -96,7 +96,7 @@ export async function p2phandler(to: string, amount: number) {
         },
       });
 
-      await tx.p2pTransfer.create({
+      const newBal = await tx.p2pTransfer.create({
         data: {
           toUserId: toUser.id,
           fromUserId: Number(userId),
@@ -104,11 +104,9 @@ export async function p2phandler(to: string, amount: number) {
           timestamp: new Date(),
         },
       });
-    });
 
-    return {
-      message: "Transaction was successful",
-    };
+      return newBal;
+    });
   } catch (err) {
     return {
       message: "Some error occured while making the transaction",

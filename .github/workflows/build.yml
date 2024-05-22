@@ -4,17 +4,14 @@ on:
     branches:
       - main
 jobs:
-  Continuous_Integration:
-    name: Check if project builds
+  build:
     runs-on: ubuntu_latest
     steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Install node
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: "20"
 
       - name: Install dependencies
         uses: npm install

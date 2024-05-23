@@ -21,3 +21,5 @@ export const signUpSchema = z.object({
   email: z.string().email({ message: "Enter a valid email" }),
   username: z.string(),
 });
+
+console.log("hello");

@@ -1,0 +1,27 @@
+name: Deploy on Push to dockerhub
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubunut-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Dockerhub
+        uses: docker/login-action@v1
+        with:
+          username: ${secrets.DOCKER_USERNAME}
+          password: ${secrets.DOCKER_PASSWORD}
+
+      - name: Push to dockerhub
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: pritam12f/venmo-clone:latest
+
+      - name: Verify dockerhub image
+        run: docker pull pritam12f/venmo-clone:tagname

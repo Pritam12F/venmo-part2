@@ -24,4 +24,4 @@ jobs:
           tags: pritam12f/venmo-clone:latest
 
       - name: Verify dockerhub image
-        run: docker pull pritam12f/venmo-clone:tagname
+        run: docker pull pritam12f/venmo-clone:latest

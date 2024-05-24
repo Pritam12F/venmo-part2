@@ -15,6 +15,9 @@ export const Appbar = ({ user, onSignin, onSignout }: AppbarProps) => {
       <div className="text-lg flex flex-col justify-center font-semibold">
         Venmo
       </div>
+      <div className="font-semibold text-lg flex justify-center items-center">
+        On ramp funds will get added to wallet in 24 hours
+      </div>
       <div className="flex flex-col justify-center pt-2">
         <Button onClick={user ? onSignout : onSignin}>
           {user ? "Logout" : "Login"}

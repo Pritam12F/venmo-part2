@@ -28,6 +28,27 @@ export async function onRampTransaction(amount: number, provider: string) {
       },
     });
 
+    await prisma.$transaction([
+      prisma.balance.updateMany({
+        where: {
+          userId: Number(userId),
+        },
+        data: {
+          amount: {
+            increment: amount,
+          },
+        },
+      }),
+      prisma.onRampTransaction.updateMany({
+        where: {
+          token,
+        },
+        data: {
+          status: "Success",
+        },
+      }),
+    ]);
+
     return {
       message: "OnRampTransaction added",
     };

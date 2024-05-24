@@ -36,4 +36,4 @@ jobs:
             sudo docker pull pritam12f/venmo-clone:latest
             sudo docker stop venmo-clone || true
             sudo docker rm venmo-clone || true
-            sudo docker run -d --name venmo-clone -p 3005:3000 -e DATABASE_URL=${{secrets.DATABASE_URL}} -e NEXTAUTH_URL=${{secrets.NEXTAUTH_URL}} -e JWT_SECRET=${{secrets.JWT_SECRET}} pritam12f/venmo-clone:latest
+            sudo docker run -d --name venmo-clone -p 3005:3000 -e DATABASE_URL=${{secrets.DATABASE_URL}} -e NEXTAUTH_URL=${{secrets.NEXTAUTH_URL}} -e JWT_SECRET=${{secrets.JWT_SECRET}} --restart unless-stopped pritam12f/venmo-clone:latest

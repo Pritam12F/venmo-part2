@@ -1,7 +1,12 @@
+- Venmo-clone
+  - This is an approach at cloning some payment platforms like Venmo or PayTM, etc.
+  - It has a user facing app where you can sign up or sign in
+  - It has a bank web hook handler (an express app) for handling requests from banking APIs that confirm if the payment is completed or not
+
 - Clone the repo
 
 ```jsx
-git clone https://github.com/100xdevs-cohort-2/week-17-final-code
+git clone https://github.com/Pritam12F/PaytmClone.git
 ```
 
 - npm install

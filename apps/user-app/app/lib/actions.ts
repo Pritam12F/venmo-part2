@@ -21,7 +21,7 @@ export async function onRampTransaction(amount: number, provider: string) {
       data: {
         amount,
         provider,
-        status: "Processing",
+        status: "Success",
         startTime: new Date(),
         userId: Number(userId),
         token,

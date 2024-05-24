@@ -5,8 +5,10 @@ import { FormType } from "../types";
 import { Button } from "@repo/ui/button";
 import { signIn } from "next-auth/react";
 import { createUser, validSignIn, validSignup } from "../app/lib/actions";
+import { useRouter } from "next/navigation";
 
 export const AuthFormWrapper = ({ type }: { type: FormType }) => {
+  const router = useRouter();
   const handleSignin = async (e: any) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -38,13 +40,15 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
     const email = String(formData.get("email"));
     const username = String(formData.get("username"));
 
-    if (validSignup(phone, password, email, username)) {
+    if (!validSignup(phone, password, email, username)) {
       alert("Wrong inputs!!");
       return;
     }
 
     try {
       await createUser(phone, password, email, username);
+      alert("Signed up user!");
+      router.push("/signin");
     } catch (err) {
       console.log("Error signing up user");
     }

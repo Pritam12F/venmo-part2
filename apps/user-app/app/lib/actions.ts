@@ -4,6 +4,7 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth";
 import { signInSchema, signUpSchema } from "../../types";
+import bcrypt from "bcrypt";
 
 export async function onRampTransaction(amount: number, provider: string) {
   const session = await getServerSession(authOptions);
@@ -183,11 +184,12 @@ export const createUser = async (
   email: string,
   username: string
 ) => {
+  const hashedPass = await bcrypt.hash(password, 10);
   try {
     await prisma.user.create({
       data: {
         number,
-        password,
+        password: hashedPass,
         email,
         name: username,
       },

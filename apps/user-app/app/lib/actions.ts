@@ -186,12 +186,20 @@ export const createUser = async (
 ) => {
   const hashedPass = await bcrypt.hash(password, 10);
   try {
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         number,
         password: hashedPass,
         email,
         name: username,
+      },
+    });
+
+    await prisma.balance.create({
+      data: {
+        userId: user.id,
+        amount: 0,
+        locked: 0,
       },
     });
   } catch (err) {

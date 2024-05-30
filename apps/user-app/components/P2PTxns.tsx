@@ -5,6 +5,13 @@ import { useGetAllP2P } from "../app/hooks/useGetAllp2p";
 
 export const P2PTxns = ({ title }: { title: string }) => {
   const { transactions, id } = useGetAllP2P();
+  if (transactions.length === 0) {
+    return (
+      <Card title={title}>
+        <div className="p-5">No recent transactions</div>
+      </Card>
+    );
+  }
   return (
     <Card title={title}>
       {transactions.map((el) => {

@@ -4,12 +4,15 @@ import { findP2Ptranx, getOnRampTransactions } from "../app/lib/actions";
 export const Transactions = async () => {
   const { data, userId } = await findP2Ptranx();
   const onramps = await getOnRampTransactions();
-  const latest_p2p = data.reduce((prev: any, curr: any) =>
+  const latest_p2p = data.filter((prev: any, curr: any) =>
     curr.timestamp > prev.timestamp ? curr : prev
   );
-  const latest_onramp = onramps.reduce((prev: any, curr: any) =>
+  const latest_onramp = onramps.filter((prev: any, curr: any) =>
     curr.time > prev.time ? curr : prev
   );
+
+  const l2p = latest_p2p[0];
+  const onr = latest_onramp[0];
 
   return (
     <Card title="Transaction History">
@@ -20,11 +23,9 @@ export const Transactions = async () => {
           </h3>
           <div className="transaction-info">
             <div className="amount text-slate-500">
-              {latest_onramp.amount / 100} INR
+              {onr?.amount ? onr?.amount / 100 : null} INR
             </div>
-            <div className="date">
-              On ramped on: {latest_onramp.time.toDateString()}
-            </div>
+            <div className="date">On ramped on: {onr?.time.toDateString()}</div>
           </div>
         </div>
         <div className="transaction-details grid grid-cols-4 my-2">
@@ -33,11 +34,11 @@ export const Transactions = async () => {
           </h3>
           <div className="transaction-info">
             <div className="amount text-slate-500">
-              {latest_p2p.amount / 100} INR
+              {l2p?.amount ? l2p?.amount / 100 : null} INR
             </div>
             <div className="date">
-              {latest_p2p.fromUserId === userId ? "Sent on: " : "Received on: "}
-              {latest_p2p.timestamp.toDateString()}
+              {l2p?.fromUserId === userId ? "Sent on: " : "Received on: "}
+              {l2p?.timestamp.toDateString()}
             </div>
           </div>
         </div>

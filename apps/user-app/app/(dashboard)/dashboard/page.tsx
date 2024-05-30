@@ -15,7 +15,7 @@ export default async function () {
   return (
     <div className="grid grid-cols-5 w-full grid-rows-2">
       <div className="col-span-5 w-full grid grid-cols-2 gap-x-20 my-4">
-        <BalanceCard amount={balance.amount} locked={balance.locked} />
+        <BalanceCard amount={balance.amount || 0} locked={balance.locked} />
         <UserDetails />
       </div>
       <div className="col-span-5 ">

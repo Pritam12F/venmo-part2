@@ -50,7 +50,7 @@ export const AuthFormWrapper = ({ type }: { type: FormType }) => {
       alert("Signed up user!");
       router.push("/signin");
     } catch (err) {
-      alert("Some error occured signin up user");
+      alert("Some error occured signing up user");
       console.log("Error signing up user");
     }
   };
